@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Product Add/Edit</title>
+  <style>
+    .error-message { color: #dc3545; font-size: 0.8rem; margin-top: 5px; }
+    .global-error { color: #dc3545; font-weight: bold; margin-bottom: 10px; }
+    label { display: block; margin-top: 10px; }
+  </style>
+</head>
+<body>
+<h2 th:text="${mode == 'edit'} ? 'Product Edit' : 'Product Add'">Product Add</h2>
+
+<form method="post"
+      th:action="${mode == 'edit'} ? @{/admin/edit/{id}(id=${product.id})} : @{/admin/add}"
+      th:object="${product}">
+
+
+  <div class="global-error" th:if="${#fields.hasGlobalErrors()}">
+    <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Global error message</p>
+  </div>
+
+  <div>
+    <label for="name">Name:</label>
+    <input type="text" id="name" th:field="*{name}" th:errorclass="field-error"/>
+    <div class="error-message" th:errors="*{name}"></div>
+  </div>
+
+  <div>
+    <label for="price">Price:</label>
+    <input type="number" id="price" th:field="*{price}" th:errorclass="field-error"/>
+    <div class="error-message" th:errors="*{price}"></div>
+  </div>
+
+  <div>
+    <label for="imageUrl">ImageURL:</label>
+    <input type="text" id="imageUrl" th:field="*{imageUrl}"/>
+  </div>
+
+  <div>
+    <label for="merchandiserApproved">
+      <input type="checkbox" id="merchandiserApproved" th:field="*{merchandiserApproved}"/>
+      담당 MD(Merchandiser)와 협의 여부
+    </label>
+  </div>
+
+  <br/>
+  <button th:text="${mode == 'edit'} ? 'Edit' : 'Add'" type="submit">Submit</button>
+</form>
+
+<a href="/admin">Back</a>
+</body>
+</html>

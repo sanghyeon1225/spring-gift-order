@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Product List</title>
+  <style>
+    .pagination { margin-top: 20px; text-align: center; }
+    .pagination a { margin: 0 5px; text-decoration: none; color: blue; }
+    .pagination span.active { font-weight: bold; color: red; }
+  </style>
+</head>
+<body>
+<h1>Product List</h1>
+<a th:href="@{/admin/add}">Add Product</a>
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Image</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="product : ${productPage.content}">
+    <td th:text="${product.id}"></td>
+    <td th:text="${product.name}"></td>
+    <td th:text="${#numbers.formatInteger(product.price, 0)}"></td>
+    <td><img th:src="${product.imageUrl}" width="80"/></td>
+    <td>
+      <form method="get" style="display:inline" th:action="@{/admin/edit/{id}(id=${product.id})}">
+        <button type="submit">Edit</button>
+      </form>
+      <form method="post" style="display:inline" th:action="@{/admin/delete/{id}(id=${product.id})}">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="pagination" th:if="${productPage.totalPages > 0}">
+
+  <a th:if="${productPage.hasPrevious()}"
+     th:href="@{/admin(page=${productPage.number - 1}, size=${productPage.size})}">&laquo; Previous</a>
+
+  <span th:each="pageNumber : ${#numbers.sequence(0, productPage.totalPages - 1)}">
+    <a th:href="@{/admin(page=${pageNumber}, size=${productPage.size})}"
+       th:text="${pageNumber + 1}"
+       th:classappend="${pageNumber == productPage.number} ? 'active'">
+    </a>
+  </span>
+
+  <a th:if="${productPage.hasNext()}"
+     th:href="@{/admin(page=${productPage.number + 1}, size=${productPage.size})}">Next &raquo;</a>
+</div>
+
+</body>
+</html>

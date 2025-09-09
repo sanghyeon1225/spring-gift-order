@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${product.name}"></title>
+  <style>
+    .container { max-width: 600px; margin: 50px auto; font-family: sans-serif; }
+    .product-image { max-width: 100%; }
+    .options-list li { border: 1px solid #eee; padding: 10px; margin-top: 5px; display: flex; justify-content: space-between;}
+  </style>
+</head>
+<body>
+<div class="container" th:object="${product}">
+  <h1 th:text="*{name}">상품 이름</h1>
+  <img class="product-image" th:src="*{imageUrl}" alt="상품 이미지">
+  <h2 th:text="|가격: ${#numbers.formatInteger(product.price, 0)}원|">가격: 10,000원</h2>
+
+</div>
+</body>
+</html>
